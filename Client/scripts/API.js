@@ -47,8 +47,9 @@ class API{
     static async register(){
         const user = document.querySelector('#user').value;
         const pass = document.querySelector('#pass').value;
-        console.log(user, pass);
-        if(user !== '' && pass !== ''){
+        const confirmPass = document.querySelector('#confirmPass').value;
+        console.log(user, pass, confirmPass);
+        if(user !== '' && pass !== '' && (pass === confirmPass)){
                 console.log('async function');
                 try{
                     console.log('try async function')

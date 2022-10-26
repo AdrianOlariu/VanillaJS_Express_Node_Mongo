@@ -1,5 +1,27 @@
 console.log("book app");
 
+const inputFields = document.querySelector('#inputFields');
+const confirmPassword = document.createElement('div');
+const btnLogIn = document.querySelector('#btnLogIn');
+const btnSignUp = document.querySelector('#btnSignUp');
+
+btnSignUp.addEventListener('click', async (err)=>{
+    UI.signUpForm();
+    const btnRegister = document.querySelector('#btnRegister');
+    btnRegister.addEventListener('click', async (e) =>{
+
+        e.preventDefault();
+        console.log("register");
+        registerStatus = await API.register().then(result => result);
+        console.log(registerStatus.success);
+        if(registerStatus.success){
+            UI.showAlert(registerStatus.success,'success');
+        }else{
+            UI.showAlert('user has not been created','danger');
+        }
+        UI.logInForm();
+    })
+})
 //book class: represents a book -> everytime we create a book it will instantiate a book object
 
 //ui class: Handles the UI Tasks
@@ -40,6 +62,8 @@ const usernamePlaceholder = document.querySelector('#usernamePlaceholder');
 // booksContainer.parentNode.removeChild(booksContainer);
 const btnLogOut = document.querySelector('#btnLogOut');
 
+
+
 btnLogOut.addEventListener('click', async (e)=>{
     e.preventDefault();
     console.log('logOut');
@@ -64,43 +88,35 @@ if(document.cookie){
 }
 
 
-const btnLogIn = document.querySelector('#btnLogIn');
+
 btnLogIn.addEventListener('click', async (e) =>{
-
-    const username = document.querySelector('#user').value;
     e.preventDefault();
-    console.log("log in");
-    accessToken = await API.logIn().then(result => result.accessToken);
-    console.log(accessToken)
-    UI.loggedIn(accessToken, myCookie.getCookie());
-    apiConnection.setBearer(accessToken);
-    console.log('bearer',apiConnection.getBearer());
-    
-
-    usernamePlaceholder.innerHTML = username;
-    console.log(username);
-    myCookie.setCookie('username',username,1);
-    myCookie.setCookie('token',accessToken,1);
+    const username = document.querySelector('#user').value;
+    if(!username || !document.querySelector('#pass').value){
+        UI.showAlert('Insert Username and Password', 'warning');
+        console.log('insert correct value');
+    }else{
+        console.log("log in");
+        accessToken = await API.logIn().then(result => result.accessToken);
+        console.log(accessToken)
+        UI.loggedIn(accessToken, myCookie.getCookie());
+        apiConnection.setBearer(accessToken);
+        console.log('bearer',apiConnection.getBearer());
+        
+        usernamePlaceholder.innerHTML = username;
+        console.log(username);
+        myCookie.setCookie('username',username,1);
+        myCookie.setCookie('token',accessToken,1);
+        UI.showAlert(`Welcome back ${username}`,'success');
+    }
 
     // authorisationContainer.remove();
 })
 
 console.log('cookie',document.cookie);
 
-const btnRegister = document.querySelector('#btnRegister');
-btnRegister.addEventListener('click', async (e) =>{
 
-    e.preventDefault();
-    console.log("register");
-    registerStatus = await API.register().then(result => result);
-    console.log(registerStatus.success);
-    if(registerStatus.success){
-        alert(registerStatus.success);
-    }else{
-        alert('user has not been created');
-    }
-    
-})
+
 
 let books;
 

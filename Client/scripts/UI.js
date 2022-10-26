@@ -156,19 +156,20 @@ class UI{
         divElement.appendChild(textMessage);
 
         //selectam unde vom pune div-ul
-        const container = document.querySelector('#booksListContainer');
+        const header = document.querySelector('#header');
         const form = document.querySelector('#book-form');
         //in container inseram div-ul inainte de form 
         
-        container.insertBefore(divElement, form);
+        header.append(divElement);
 
         setTimeout(() => {
-            container.removeChild(divElement);
+            header.removeChild(divElement);
         }, 2000)
     }
 
     static loggedIn(cookie){
         if(!cookie){
+            // btnRegister.classList.add('hideContainer');
             infoContainer.classList.add('hideContainer');
             booksContainer.classList.add('hideContainer');
             authorisationContainer.classList.remove('hideContainer');
@@ -178,5 +179,30 @@ class UI{
             authorisationContainer.classList.add('hideContainer');
 
         }
+    }
+
+    static signUpForm(){
+        btnLogIn.classList.add('hideContainer');
+        btnSignUp.classList.add('hideContainer');
+
+        confirmPassword.setAttribute('class','form-group');
+        confirmPassword.innerHTML = `<input type="text" id="confirmPass" class="form-control-sm" placeholder="Confirm Password">`;
+        inputFields.append(confirmPassword);
+
+        const inputFieldsButtons = document.querySelector('#inputFieldsButtons');
+
+        const registerButton = document.createElement('div');
+        registerButton.setAttribute('style','display:block;margin-left: auto;');
+        registerButton.setAttribute('class','mt-4');
+        registerButton.innerHTML = `<button class="btn btn-primary btn-add-book" id="btnRegister" >Register</button>`;
+        inputFieldsButtons.append(registerButton);
+        
+    }
+
+    static logInForm(){
+        btnLogIn.classList.remove('hideContainer');
+        btnSignUp.classList.remove('hideContainer');
+        btnRegister.classList.add('hideContainer');
+        confirmPassword.classList.add('hideContainer');
     }
 }
