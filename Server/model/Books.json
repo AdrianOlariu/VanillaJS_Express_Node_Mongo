@@ -1,0 +1,74 @@
+[
+    {
+        "title": "The Karamazov Brothers",
+        "author": "Fyodor Dostoevsky",
+        "status": "Not read",
+        "isbn": "1"
+    },
+    {
+        "title": "Permanent Record",
+        "author": "Edward Snowden",
+        "status": "Read",
+        "isbn": "2"
+    },
+    {
+        "title": "Fight Club",
+        "author": "Chuck Palahniuk",
+        "status": "Read",
+        "isbn": "3"
+    },
+    {
+        "title": "Eye of God",
+        "author": "James Rollins",
+        "status": "Read",
+        "isbn": "4"
+    },
+    {
+        "title": "The English Patient",
+        "author": "Michael Ondaantje",
+        "status": "Read",
+        "isbn": "5"
+    },
+    {
+        "title": "Deep Fathom",
+        "author": "James Rollins",
+        "status": "Read",
+        "isbn": "6"
+    },
+    {
+        "title": "Humiliated and Insulted",
+        "author": "Fyodor Dostoevsky",
+        "status": "Read",
+        "isbn": "7"
+    },
+    {
+        "title": "How to make friends and influence people",
+        "author": "Dale Carnegie",
+        "status": "In progress",
+        "isbn": "8"
+    },
+    {
+        "title": "Introspection",
+        "author": "Marcus Aurelius",
+        "status": "In progress",
+        "isbn": "9"
+    },
+    {
+        "title": "1984",
+        "author": "George Orwell",
+        "status": "Not read",
+        "isbn": "10"
+    },
+    {
+        "title": "Recunoaste-ma",
+        "author": "Adrian Olariu",
+        "status": "Not Published",
+        "isbn": "11"
+    },
+    {
+        "title": "The Intelligence of Matter",
+        "author": "Dumitru Constantin Dulcan",
+        "status": "Not read",
+        "isbn": "12"
+    }
+]

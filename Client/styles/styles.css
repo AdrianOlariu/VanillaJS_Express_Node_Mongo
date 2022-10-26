@@ -1,0 +1,76 @@
+body{
+    /* background-color:rgb(255, 248, 234)!important; */
+}
+
+.text-primary-color{
+    color:rgb(255, 141, 2)!important;
+}
+
+.ri-book-open-fill{
+    cursor: pointer;
+}
+
+.btn-add-book:hover{
+    background-color:rgb(3, 182, 161)!important;
+}
+
+.btn-delete:hover{
+    background-color:rgb(255, 141, 2)!important;
+}
+
+.btn-edit:hover{
+    background-color:rgb(3, 182, 161)!important;
+}
+
+.btn-save{
+    background-color:rgb(100, 177, 196)!important;
+}
+
+.btn-cancel{
+    background-color:rgb(100, 177, 196)!important;
+}
+
+.btn-save:hover{
+    background-color:rgb(35, 209, 64)!important;
+}
+
+.btn-cancel:hover{
+    background-color:rgb(218, 58, 0)!important;
+}
+
+.btn-yes:hover{
+    background-color:rgb(35, 209, 64)!important;
+}
+
+.btn-no:hover{
+    background-color:rgb(218, 58, 0)!important;
+}
+
+.td-edit{
+    background-color:rgb(151, 167, 168)!important;
+    color:rgb(0, 0, 0);
+}
+
+.btn-export:hover{
+    background-color:rgb(3, 182, 161)!important;
+}
+
+.authorisationContainer{
+    position: relative!important;
+    /* top: 40%; */
+    /* left: 10%; */
+    /* margin-top: -50px;
+    margin-left: -50px;
+    width: 100px;
+    height: 100px; */
+}
+
+.authorisationChild{
+    position: absolute!important;
+    top: 80%;
+    left: 40%;
+}
+
+.hideContainer{
+    display: none!important;
+}
