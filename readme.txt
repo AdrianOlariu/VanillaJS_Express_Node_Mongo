@@ -19,3 +19,7 @@ DEV ENVIRONMENT:
   middlewareFunctions.js  => accessControlAllowCredentials (DELETE: || !req.headers.origin)
   logOutController.js => logOut ( clearCookie header -> ADD: {secure:true} )
   logInController.js => logOut ( clearCookie header -> ADD: {secure:true} )
+
+
+Useful links:
+GIT: https://gitready.com/beginner/2009/01/19/ignoring-files.html#:~:text=Two%20things%20to%20keep%20in%20mind%20with%20ignoring,empty%20directories%20do%20not%20get%20tracked%20by%20Git.
