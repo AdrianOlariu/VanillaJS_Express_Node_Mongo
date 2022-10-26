@@ -1,16 +1,34 @@
 class Cookie {
-    constructor(cookie){
-        this.cookie = cookie;
+    constructor(cname, cvalue, hours){
+        this.cname = cname;
+        this.cvalue = cvalue;
+        this.hours = hours;
+        if(this.cname){
+            const d = new Date();
+            d.setTime(d.getTime() + (this.hours*60*60*1000));
+            let expires = "expires="+ d.toUTCString();
+            document.cookie = this.cname + "=" + this.cvalue + ";" + expires + ";";
+        }
     }
 
     setCookie(cname, cvalue, hours){
+        if(cvalue){
             const d = new Date();
             d.setTime(d.getTime() + (hours*60*60*1000));
             let expires = "expires="+ d.toUTCString();
             document.cookie = cname + "=" + cvalue + ";" + expires + ";";
+        }
     }
 
     getCookie(){
         return document.cookie;
+    }
+
+    clearCookie(){
+        document.cookie = this.cname + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+    }
+
+    static clearCookie(cookieName){
+        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
     }
 }

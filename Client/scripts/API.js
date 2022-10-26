@@ -140,9 +140,9 @@ class API{
             )
 
             if(response.ok){
-                document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-                document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-                document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                Cookie.clearCookie("username");
+                Cookie.clearCookie("token");
+                Cookie.clearCookie("jwt");                
                 UI.loggedIn(false);
                 return await response.json();
             }else{

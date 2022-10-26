@@ -15,7 +15,7 @@ btnImport.addEventListener('click', (event) =>{
     var reader = new FileReader();
     var fileToRead = document.querySelector('#fileChosen').files[0];
 
-    if(!fileToRead && !books){
+    if(!fileToRead){
         UI.showAlert('Please chose a compatible JSON File to populate the list or call the book list from DB', 'warning');
     }else if(fileToRead){
         // attach event, that will be fired, when read is end
@@ -48,7 +48,8 @@ btnLogOut.addEventListener('click', async (e)=>{
 
 let accessToken;
 let apiConnection = new API('');
-let myCookie = new Cookie("");
+let myCookie = new Cookie();
+console.log(myCookie);
 UI.loggedIn(myCookie.getCookie());
 if(document.cookie){
     //https://stackoverflow.com/questions/62323246/how-to-stay-logged-in-after-the-browser-is-closed-using-javascript
