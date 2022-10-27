@@ -4,6 +4,7 @@ const inputFields = document.querySelector('#inputFields');
 const confirmPassword = document.createElement('div');
 const btnLogIn = document.querySelector('#btnLogIn');
 const btnSignUp = document.querySelector('#btnSignUp');
+let role = '', token = '', username = '';
 
 btnSignUp.addEventListener('click', async (err)=>{
     UI.signUpForm();
@@ -59,6 +60,7 @@ const booksContainer = document.querySelector('#booksListContainer');
 const authorisationContainer = document.querySelector('#authorisationContainer');
 const infoContainer = document.querySelector('#infoContainer');
 const usernamePlaceholder = document.querySelector('#usernamePlaceholder');
+const rolePlaceholder = document.querySelector('#rolePlaceholder');
 // booksContainer.parentNode.removeChild(booksContainer);
 const btnLogOut = document.querySelector('#btnLogOut');
 
@@ -70,7 +72,7 @@ btnLogOut.addEventListener('click', async (e)=>{
     await apiConnection.logOut();
 })
 
-let accessToken;
+let loggedInInfos = '';
 let apiConnection = new API('');
 let myCookie = new Cookie();
 console.log(myCookie);
@@ -79,12 +81,14 @@ if(document.cookie){
     //https://stackoverflow.com/questions/62323246/how-to-stay-logged-in-after-the-browser-is-closed-using-javascript
     //folosim metoda split pentru a taia string-ul continut in document.cookie
     //https://linuxhint.com/cut-string-after-specific-character-in-javascript/#:~:text=There%20is%20another%20JavaScript%20method%20for%20cutting%20a,the%20character%20and%20the%20other%20after%20the%20character.
-    const username = document.cookie.split(';')[0].split('=')[1];
+    username = document.cookie.split(';')[0].split('=')[1];
     console.log('#username:',username);
-    const token = document.cookie.split(';')[1].split('=')[1];
+    token = document.cookie.split(';')[1].split('=')[1];
     console.log('#token:',token);
+    role = document.cookie.split(';')[2].split('=')[1];
     apiConnection.setBearer(token);    
     usernamePlaceholder.innerHTML = username;
+    rolePlaceholder.innerHTML = `[${role.toUpperCase()}]`;
 }
 
 
@@ -97,17 +101,25 @@ btnLogIn.addEventListener('click', async (e) =>{
         console.log('insert correct value');
     }else{
         console.log("log in");
-        accessToken = await API.logIn().then(result => result.accessToken);
-        console.log(accessToken)
-        UI.loggedIn(accessToken, myCookie.getCookie());
-        apiConnection.setBearer(accessToken);
+        loggedInInfos = await API.logIn().then(result => {
+            myCookie.setCookie('username',username,1);
+        myCookie.setCookie('token',result.accessToken,1);
+        myCookie.setCookie('role',result.role,1);
+        // usernamePlaceholder.innerHTML = username;
+    rolePlaceholder.innerHTML = `[${result.role.toUpperCase()}]`;
+            return result});
+            console.log(loggedInInfos)
+        console.log(loggedInInfos.accessToken)
+        UI.loggedIn(loggedInInfos.accessToken, myCookie.getCookie());
+        apiConnection.setBearer(loggedInInfos.accessToken);
         console.log('bearer',apiConnection.getBearer());
         
         usernamePlaceholder.innerHTML = username;
         console.log(username);
         myCookie.setCookie('username',username,1);
-        myCookie.setCookie('token',accessToken,1);
-        UI.showAlert(`Welcome back ${username}`,'success');
+        myCookie.setCookie('token',loggedInInfos.accessToken,1);
+        myCookie.setCookie('role',loggedInInfos.role,1);
+        UI.showAlert(`Welcome, ${username}`,'info');
     }
 
     // authorisationContainer.remove();

@@ -30,13 +30,13 @@ class API{
                     )
     
                     if(response.ok){
-                        
                         return await response.json();
                     }else{
                         throw new Error(`${response.status} ${response.statusText}`);
                     }
                 }catch (err){
-                    console.log('caught error',err);
+                    UI.showAlert('Username or Password wrogn', 'danger');
+                    console.log('error caught here:',err);
                 }
         }else{
             console.log('User and Password required');
@@ -63,6 +63,7 @@ class API{
                     )
     
                     if(response.ok){
+                        UI.showAlert(`User ${user} created successfully`,'info');
                         return await response.json();
                     }else{
                         throw new Error(`${response.status} ${response.statusText}`);
@@ -143,7 +144,8 @@ class API{
             if(response.ok){
                 Cookie.clearCookie("username");
                 Cookie.clearCookie("token");
-                Cookie.clearCookie("jwt");                
+                Cookie.clearCookie("jwt");
+                Cookie.clearCookie("role");
                 UI.loggedIn(false);
                 return await response.json();
             }else{
