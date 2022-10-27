@@ -23,9 +23,12 @@ function refreshToken(req, res, next){
                 refreshToken,
                 process.env.REFRESH_TOKEN_SECRET,
                 (err, decoded) => {
-                    if(!err || foundUser.username !== decoded.username){//verificam si username-ul sa fim siguri
+                    if(!err && foundUser.username === decoded.username){//verificam si username-ul sa fim siguri
                         const newAccessToken = jwt.sign(//creem un nou acess token
-                            {"username":decoded.username},
+                            {
+                            "username":foundUser.username,
+                            "roles":foundUser.roles
+                            },
                             process.env.ACCESS_TOKEN_SECRET,
                             {expiresIn: '5m'}
                         );

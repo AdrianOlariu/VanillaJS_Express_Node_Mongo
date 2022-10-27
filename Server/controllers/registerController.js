@@ -20,6 +20,8 @@ async function register(req, res){
                 //store the new user;
                 const newUser = {
                     "username":username,
+                    //default user role
+                    "roles":{"user":1000},
                     "password":hashedPassword
                 };
 

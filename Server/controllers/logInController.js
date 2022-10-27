@@ -19,10 +19,15 @@ async function logIn(req, res){
                 if(passMatch){
 
                     //-------------------------------------ACCESS_TOKEN
+                    //in acest access token, encodam username-ul si rolurile
                     const accessToken = jwt.sign(
-                        {"username":foundUser.username},
+                        
+                        {
+                        "username":foundUser.username,
+                        "roles":foundUser.roles
+                        },
                         process.env.ACCESS_TOKEN_SECRET,
-                        {"expiresIn":'5m'}
+                        {"expiresIn":'15m'}
                     )
 
                     //-------------------------------------REFRESH_TOKEN - > USED TO RENEW THE ACCESS TOKEN
@@ -70,8 +75,14 @@ async function logIn(req, res){
                     //---------------DEV:           res.cookie('jwt', refreshToken, {httpOnly: true, sameSite:'None', maxAge: 24 * 60 * 60 * 1000});
                     //---------------PRODUCTION:    res.cookie('jwt', refreshToken, {httpOnly: true, sameSite:'None', secure:true, maxAge: 24 * 60 * 60 * 1000});
                     res.cookie('jwt', refreshToken, {httpOnly: true, sameSite:'None', secure:true, maxAge: 24 * 60 * 60 * 1000});
-                    //trimitem accessToken-ul intr-un JSON. Nu trebuie sa il trimitem in JAVASCRIPT sau in LOCAL STORAGE.
-                    res.json({accessToken});
+                    //trimitem accessToken-ul intr-un JSON
+                    //trimitem in roles, nivelul de autoritate al userului
+                    res.json({
+                        "accessToken": accessToken, 
+                        //selectam pe baza valorii cele mai mari numele proprietatii cu acea valoare si o trimitem la client
+                        "role": Object.getOwnPropertyNames(foundUser.roles)[Object.values(foundUser.roles).indexOf(Math.max(...Object.values(foundUser.roles)))]
+                        });
+                        console.log(Object.getOwnPropertyNames(foundUser.roles)[Object.values(foundUser.roles).indexOf(Math.max(...Object.values(foundUser.roles)))]);
                 }else{
                     res.status(409);
                     res.json({"message":"incorrect password"});

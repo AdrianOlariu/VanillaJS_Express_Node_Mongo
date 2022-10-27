@@ -28,9 +28,9 @@ app.use('/users', require('./routes/api/users'));
 
 app.use('/refreshToken', require('./routes/api/refreshToken'));
 
-app.use(verifyJWT);//to verify the access token for every request on books
+app.use(verifyJWT);//to verify the access token for every request from here
 app.use('/books', require('./routes/api/books'));
-
+app.use('/users', require('./routes/api/user_actions'));
 
 app.get('*',(req,res)=>{
     if(req.accepts('html')){
