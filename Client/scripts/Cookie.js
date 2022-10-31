@@ -24,6 +24,24 @@ class Cookie {
         return document.cookie;
     }
 
+    getCookieByName(cname){
+        const rawCookies = document.cookie.split(';');
+
+        const cookieName = rawCookies.map(cookie => (
+            (cookie.split('=')[0].trim())
+        ));
+
+        const cookieValue = rawCookies.map(cookie => (
+            (cookie.split('=')[1])
+        ));
+
+        console.log(cookieName, cookieValue);
+
+        const found = cookieValue[cookieName.indexOf(cname)];
+
+        return found;
+    }
+
     clearCookie(){
         document.cookie = this.cname + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
     }

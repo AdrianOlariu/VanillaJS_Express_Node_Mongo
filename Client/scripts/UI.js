@@ -41,7 +41,7 @@ class UI{
         trowElement.innerHTML = 
         `
             <tr>
-                <td >${book.title}</td>
+                <td>${book.title}</td>
                 <td>${book.author}</td>
                 <td>${book.status}</td>
                 <td>${book.isbn}</td>
@@ -66,18 +66,21 @@ class UI{
             let children = element.parentNode.parentNode.children;
             UI.holdBook.title = children[0].textContent;
             UI.holdBook.isbn = children[3].textContent;
-                    UI.holdBook.status = children[2].textContent;
-                    UI.holdBook.author = children[1].textContent;
+            UI.holdBook.status = children[2].textContent;
+            UI.holdBook.author = children[1].textContent;
             children[children.length - 1].textContent = 'Delete entry?';
             children[children.length - 1].appendChild(UI.button('Yes'));
             children[children.length - 1].appendChild(UI.button('No'));
         }
     }
 
+    static deleteUser(element){
+        
+    }
+
     static confirmDelete(element){
             element.parentNode.parentNode.remove();
     }
-
 
 
     static cancelEdit(element, book){
@@ -171,11 +174,11 @@ class UI{
         if(!cookie){
             // btnRegister.classList.add('hideContainer');
             infoContainer.classList.add('hideContainer');
-            booksContainer.classList.add('hideContainer');
+            books_section.classList.add('hideContainer');
             authorisationContainer.classList.remove('hideContainer');
         }else{
             infoContainer.classList.remove('hideContainer');
-            booksContainer.classList.remove('hideContainer');
+            books_section.classList.remove('hideContainer');
             authorisationContainer.classList.add('hideContainer');
 
         }
@@ -204,5 +207,47 @@ class UI{
         btnSignUp.classList.remove('hideContainer');
         btnRegister.classList.add('hideContainer');
         confirmPassword.classList.add('hideContainer');
+    }
+
+    static setRole(role){
+        if(role !== 'user' ){
+            btnRolePlaceholder.classList.remove('hideContainer');
+            console.log('admin sau editor');
+            btnRolePlaceholder.setAttribute('style','text-decoration:none;');
+            btnRolePlaceholder.classList.add('btn-edit-users');
+        }else{
+            btnRolePlaceholder.classList.add('hideContainer');
+        }
+    }
+
+    static hideSection(id){
+        id.classList.add('hideContainer');
+    }
+    static showSection(id){
+        id.classList.remove('hideContainer');
+    }
+
+    static showUsers(result){
+        console.log(result);
+        const res = result;
+        const usersList = document.querySelector('#users-list');
+
+        const html = result.map(res => `
+        <tr>
+            <td>${res.username}</td>
+            <td>
+            ${res.roles[res.roles.length - 1]}
+            </td>
+            <td class="text-center">
+            <button type="button" class="btn btn-primary btn-sm btn-delete">Delete
+            </button><button class="btn btn-primary btn-sm btn-edit">Edit</button>
+            </td>
+        </tr>
+        ` ).join('');
+        console.log(html);
+
+        usersList.innerHTML = html;
+        
+        console.log(res);
     }
 }

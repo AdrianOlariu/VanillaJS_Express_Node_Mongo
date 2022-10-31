@@ -154,5 +154,20 @@ class API{
         }catch (err){
             console.log('caught error',err);
         }
-}
+    }
+
+    async getUsers(){
+        
+        try{
+            const response = await fetch('http://localhost:3500/users',{
+                method:'GET',
+                headers: {
+                    Authorization: 'Bearer ' + this.bearer
+                }
+            });
+            return await response.json();
+        }catch(err){
+            console.log(err);
+        }
+    }
 }
