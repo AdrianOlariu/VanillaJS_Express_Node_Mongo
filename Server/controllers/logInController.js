@@ -26,8 +26,11 @@ async function logIn(req, res){
                         "username":foundUser.username,
                         "roles":foundUser.roles
                         },
+
                         process.env.ACCESS_TOKEN_SECRET,
+
                         {"expiresIn":'15m'}
+
                     )
 
                     //-------------------------------------REFRESH_TOKEN - > USED TO RENEW THE ACCESS TOKEN

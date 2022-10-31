@@ -4,7 +4,10 @@ const jwt = require('jsonwebtoken');
 function verifyJWT(req, res, next){
     //the JWT Token is in req.headers.authorization - websites use 'Authorizations' or 'authorization'
     const authHeader = (req.headers['authorization'] || req.headers.Authorization);
-    console.log('Authorization header:',authHeader);    const token = authHeader.split(" ")[1];//create two elements in the arry, and select the element with index 1, so only the token.
+    console.log('Authorization header:',authHeader);
+    // const roles = req.headers.roles;
+    // console.log(roles);
+    const token = authHeader.split(" ")[1];//create two elements in the arry, and select the element with index 1, so only the token.
 
     //Pe baza token-ului decodam username-ul. Practic il luam din token
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) =>{

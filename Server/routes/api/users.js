@@ -3,6 +3,8 @@ const logInController = require('../../controllers/logInController');
 const registerController = require('../../controllers/registerController')
 const router = express.Router();
 const logOutController = require('../../controllers/logOutController');
+const  users = require('../../model/users.json');
+const verifyRoles = require('../../middleware/verifyRoles');
 
 router.route('/register').post(registerController.register);
 
