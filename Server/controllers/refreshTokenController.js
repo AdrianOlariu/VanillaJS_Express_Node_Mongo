@@ -30,7 +30,7 @@ function refreshToken(req, res, next){
                             "roles":foundUser.roles
                             },
                             process.env.ACCESS_TOKEN_SECRET,
-                            {expiresIn: '5m'}
+                            {expiresIn: '1m'}
                         );
                         res.json({newAccessToken});//trimitem acest access token catre client / front end
                     }else{

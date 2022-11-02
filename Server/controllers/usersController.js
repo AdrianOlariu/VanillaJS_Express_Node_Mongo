@@ -25,7 +25,7 @@ async function deleteUser(req,res){
         
         await fsPromises.writeFile(path.join(__dirname,'..','model','users.json'), JSON.stringify(otherUsers));
 
-        res.json({"Success":`${foundUser.username} been deleted`});
+        res.json({"Success":`${foundUser.username} has been deleted`});
     }else{
         res.json({"Not completed":`${username} is not in the list`});
     }
