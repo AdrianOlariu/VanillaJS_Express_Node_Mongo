@@ -11,10 +11,10 @@ class Cookie {
         }
     }
 
-    setCookie(cname, cvalue, hours){
+    setCookie(cname, cvalue, hours, minsorhours){
         if(cvalue){
             const d = new Date();
-            d.setTime(d.getTime() + (hours*60*60*1000));
+            d.setTime(d.getTime() + ((minsorhours ? minsorhours : hours*60) *60*1000));
             let expires = "expires="+ d.toUTCString();
             document.cookie = cname + "=" + cvalue + ";" + expires + ";";
         }
@@ -34,8 +34,6 @@ class Cookie {
         const cookieValue = rawCookies.map(cookie => (
             (cookie.split('=')[1])
         ));
-
-        console.log(cookieName, cookieValue);
 
         const found = cookieValue[cookieName.indexOf(cname)];
 

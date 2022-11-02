@@ -12,14 +12,17 @@
 <body>
 
     <!-- header -->
-    <div class="container mt-4" id="header">
-        <div style="display:inline-block;">
+    <div class="container mt-4 " id="header">
+        <i class="ri-arrow-right-s-line hideContainer" id="arrow"></i>
+        <div style="display:inline-block;" id="header-title">
             <h1 class="display-4">
                 <i class="ri-book-open-line text-primary-color"
                 onmouseover="this.className='ri-book-open-fill text-primary-color'"
                 onmouseleave="this.className='ri-book-open-line text-primary-color'" onclick="refreshToken()"></i> My <span class="primary-color text-primary-color"> Book </span> List
             </h1>
         </div>
+        
+
         <div class="mt-4"id="infoContainer" style="display:inline-block; float:right">
             <a type="button" id="btnRolePlaceholder">
                 <b><span id="rolePlaceholder" class="primary-color"></span></b>
@@ -134,6 +137,7 @@
     <script src="./scripts/authentication.js"></script>
     <script src="./scripts/UI.js"></script>
     <script src="./scripts/main.js"></script>
+    <script src="./scripts/views-controller/User.js"></script>
     <script src="./scripts/views-controller/books_section.js"></script>
     <script src="./scripts/views-controller/users_section.js"></script>
 </body>

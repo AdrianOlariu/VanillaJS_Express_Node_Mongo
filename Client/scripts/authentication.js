@@ -32,7 +32,7 @@ btnLogIn.addEventListener('click', async (e) =>{
         console.log("log in");
         loggedInInfos = await API.logIn().then(result => {
         myCookie.setCookie('username', username, 1);
-        myCookie.setCookie('token', result.accessToken, 1);
+        myCookie.setCookie('token', result.accessToken, 0, 1);
         myCookie.setCookie('role', result.role, 1);
         // usernamePlaceholder.innerHTML = username;
         rolePlaceholder.innerHTML = `[${result.role.toUpperCase()}]`;
@@ -40,8 +40,8 @@ btnLogIn.addEventListener('click', async (e) =>{
         UI.setRole(result.role);
 
         return result});
-        console.log(loggedInInfos)
-        console.log(loggedInInfos.accessToken)
+        // console.log(loggedInInfos)
+        console.log(loggedInInfos.accessToken);
         UI.loggedIn(loggedInInfos.accessToken, myCookie.getCookie());
 
         apiConnection.setBearer(loggedInInfos.accessToken);
@@ -51,13 +51,14 @@ btnLogIn.addEventListener('click', async (e) =>{
             
         console.log(username);
         
-        setTimeout(()=>{
-            myCookie.setCookie('username', username, 1);
-            myCookie.setCookie('role', loggedInInfos.role, 1);
-        },100);
-        myCookie.setCookie('token', loggedInInfos.accessToken, 1);
+        // myCookie.setCookie('username', username, 1);
+        // myCookie.setCookie('role', loggedInInfos.role, 1);
+        // myCookie.setCookie('token', loggedInInfos.accessToken, 1);
 
         UI.showAlert(`Welcome, ${username}`,'info');
+        loggedIn = true;
+        // UI.animationHeader('When the authentication token expires, refresh it by clicking the book icon!', animationPlayed, allowedPlayableAnimations);
+        // animationPlayed += 1;
     }
 
     // authorisationContainer.remove();

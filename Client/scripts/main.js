@@ -1,11 +1,27 @@
 document.addEventListener('DOMContentLoaded',
 UI.displayBooks());
 console.log("book app");
-
-let role = '', token = '', username = '';
-
+let animations = true;
 let btnRolePlaceholder = document.querySelector('#btnRolePlaceholder');
+let role = '', token = '', username = '';
+let loggedInInfos = '';
+let apiConnection = new API('');
+let myCookie = new Cookie();
+let animationPlayed = 0;
+let allowedPlayableAnimations = 2;
+let section;
+let tokenExpired = false;
+
 let loggedIn = false;
+if(myCookie.getCookieByName('token') || myCookie.getCookieByName('username')){
+    console.log();
+    loggedIn = true;
+    UI.animationHeader('When the authentication token expires, refresh it by clicking the book icon!', animationPlayed, allowedPlayableAnimations);
+    animationPlayed += 1;
+}else{
+    tokenExpired = true;
+}
+
 const books_section = document.querySelector('#booksListContainer');
 
 const authorisationContainer = document.querySelector('#authorisationContainer');
@@ -18,21 +34,31 @@ const usersContainer = document.querySelector('#usersContainer')
 
 btnRolePlaceholder.addEventListener('click', async (e)=>{
     e.preventDefault();
-    UI.showSection(usersContainer);
-    apiConnection.getUsers().then((result) => {
-        if(result){
-            UI.hideSection(books_section);
-            UI.showUsers(result);
+    if(myCookie.getCookieByName('token')){
+        UI.animationHeader('Go back to the book list, by clicking the book icon!', animationPlayed, allowedPlayableAnimations);
+        animationPlayed += 1;
+        UI.showSection(usersContainer);
+        section = 'users';
+
+        apiConnection.getUsers().then((result) => {
+            if(result){
+                UI.hideSection(books_section);
+                UI.showUsers(result);
+            }
+        }).catch(err =>{
+            console.log(err);
+        });
+    }else{
+        UI.showAlert('Access token has expired! Refresh it!','danger');
+        if(section === 'users'){
+            UI.animationHeader('Go back to the book list, by clicking the book icon!', 0, 1);
+        }else{
+            UI.animationHeader('When the access token expires, refresh it by clicking the book icon!', 0, 1);
         }
-    }).catch(err =>{
-        console.log(err);
-    });
+    }
 })
 
-let loggedInInfos = '';
-let apiConnection = new API('');
-let myCookie = new Cookie('someCookie','someValue','2');
-console.log('my cookie here: ',myCookie.getCookie());
+// console.log('my cookie here: ',myCookie.getCookie());
 
 UI.loggedIn(myCookie.getCookie());
 if(document.cookie){
@@ -56,21 +82,52 @@ btnLogOut.addEventListener('click', async (e)=>{
     console.log('logOut');
     UI.hideSection(usersContainer);
     await apiConnection.logOut();
+    loggedIn = false;
+    animationPlayed = 0;
 })
 
 console.log('cookie',document.cookie);
 
+let flagPlayed = false;
+
 async function refreshToken(){
-    myCookie.getCookieByName('token');
-    UI.showSection(books_section);
-    UI.hideSection(usersContainer);
-    console.log('refresh token');
-    await apiConnection.refreshToken().then(res => {if(res.newAccessToken){
-        myCookie.clearCookie('token');
-        myCookie.setCookie('token', res.newAccessToken, 1);
-        apiConnection.setBearer(res.newAccessToken)
-    }else{
-        return new Error("couldn't refresh the token");
+    if(section === 'users'){
+        UI.animationHeader('When the authentication token expires, refresh it by clicking the book icon!', animationPlayed, allowedPlayableAnimations);
+        animationPlayed += 1;
     }
-    });
+    
+    if(loggedIn || tokenExpired){
+        console.log('attempting refresh');
+        if(!flagPlayed){
+            flagPlayed = true;
+            if(!(section !== undefined || section !== 'books') || section === 'users'){
+                UI.animationHeader('When the authentication token expires, refresh it by clicking the book icon!', animationPlayed, allowedPlayableAnimations);
+                animationPlayed += 1;
+            }
+        }
+        // myCookie.getCookieByName('token');
+        if(loggedIn){
+            UI.showSection(books_section);
+            UI.hideSection(usersContainer);
+            if(section !== 'users' && !myCookie.getCookieByName('token')){
+                if(loggedIn){
+                    await apiConnection.refreshToken().then(res => {if(res.newAccessToken){
+                        console.log('called');
+                        myCookie.clearCookie('token');
+                        myCookie.setCookie('token', res.newAccessToken, 0, 1);
+                        apiConnection.setBearer(res.newAccessToken)
+                        UI.showAlert(`New access token generated!`,'success');
+                    }else{
+                        return new Error("couldn't refresh the token");
+                    }
+                });
+            }
+        }else{
+            if(section !== 'users'){
+                UI.showAlert(`Your ccess token is still valid!`,'info');
+            }
+        }
+        section = 'books';
+    }
+}
 }

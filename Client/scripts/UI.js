@@ -148,7 +148,7 @@ class UI{
         }
     }
 
-    static showAlert(message, type){
+    static showAlert(message, type, duration){
         //creem un div, dinamic
         const divElement = document.createElement('div');
         //adaugam clasele la acel div, dinamic
@@ -167,7 +167,7 @@ class UI{
 
         setTimeout(() => {
             header.removeChild(divElement);
-        }, 2000)
+        }, duration ? duration : 2000)
     }
 
     static loggedIn(cookie){
@@ -240,14 +240,40 @@ class UI{
             </td>
             <td class="text-center">
             <button type="button" class="btn btn-primary btn-sm btn-delete">Delete
-            </button><button class="btn btn-primary btn-sm btn-edit">Edit</button>
+            
             </td>
         </tr>
         ` ).join('');
         console.log(html);
+        //to be added
+        // </button><button class="btn btn-primary btn-sm btn-edit">Edit</button>
 
         usersList.innerHTML = html;
         
         console.log(res);
+    }
+
+    static arrowPointing(){
+        const arrow = document.querySelector('#arrow');
+        const header = document.querySelector('#header-title');
+        this.hideSection(arrow);
+
+        setTimeout(() =>{header.classList.add('header-right');}, 450);
+        setTimeout(() =>{this.showSection(arrow)}, 750);
+        
+        setTimeout(() =>{arrow.classList.add('arrow-right');}, 750);
+        
+        setTimeout(() =>{this.hideSection(arrow)}, 4700);
+        setTimeout(() =>{header.classList.remove('header-right');}, 5100);
+        
+    }
+
+    static animationHeader(text, animationPlayed, allowedPlayableAnimations){
+        // 'Go back to the book list, by clicking the book icon!'
+        if(animationPlayed < allowedPlayableAnimations && animations){
+            console.log('animation played:',animationPlayed);
+            setTimeout(() =>{UI.arrowPointing()},2000);
+            setTimeout(() =>{UI.showAlert(text,'info', 4000)},1000);
+        }
     }
 }

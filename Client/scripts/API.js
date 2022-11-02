@@ -170,4 +170,24 @@ class API{
             console.log(err);
         }
     }
+
+    async deleteUser(userName){
+        console.log(userName);
+        try{
+            const response = await fetch(
+                'http://localhost:3500/users/',
+                {
+                    method:'DELETE',
+                    headers: {
+                        'Content-Type':'application/json',
+                        Authorization: 'Bearer ' + this.bearer
+                        },
+                    body: JSON.stringify({username:userName})
+                }
+            )
+            return await response.json();
+        }catch (err){
+            console.log(err);
+        }
+    }
 }
