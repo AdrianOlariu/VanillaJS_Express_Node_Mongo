@@ -81,6 +81,7 @@ async function logIn(req, res){
                     //trimitem accessToken-ul intr-un JSON
                     //trimitem in roles, nivelul de autoritate al userului
                     res.json({
+                        "username": foundUser.username,
                         "accessToken": accessToken, 
                         //selectam pe baza valorii cele mai mari numele proprietatii cu acea valoare si o trimitem la client
                         "role": Object.getOwnPropertyNames(foundUser.roles)[Object.values(foundUser.roles).indexOf(Math.max(...Object.values(foundUser.roles)))]

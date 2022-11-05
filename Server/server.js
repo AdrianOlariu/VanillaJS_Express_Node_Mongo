@@ -7,6 +7,9 @@ const cors = require('cors');
 const corsOptions = require('./config/corsConfig');
 const verifyJWT = require('./middleware/verifyJWT');
 const cookieParser = require('cookie-parser');
+const mongo = require('./mongoDB');
+
+
 
 app.use(logger);
 app.use(accessControlAllowCredentials);
@@ -29,6 +32,7 @@ app.use('/users', require('./routes/api/users'));
 app.use('/refreshToken', require('./routes/api/refreshToken'));
 
 app.use(verifyJWT);//to verify the access token for every request from here
+// app.use('/verifyaccesstoken', require('./routes/api/verifyaccesstoken'));
 app.use('/books', require('./routes/api/books'));
 app.use('/users', require('./routes/api/user_actions'));
 
