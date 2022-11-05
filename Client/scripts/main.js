@@ -61,14 +61,15 @@ btnRolePlaceholder.addEventListener('click', async (e)=>{
 // console.log('my cookie here: ',myCookie.getCookie());
 
 UI.loggedIn(myCookie.getCookie());
-if(document.cookie){
+
+if(myCookie.getCookieByName('username') && myCookie.getCookieByName('role')){
     //https://stackoverflow.com/questions/62323246/how-to-stay-logged-in-after-the-browser-is-closed-using-javascript
     //folosim metoda split pentru a taia string-ul continut in document.cookie
     //https://linuxhint.com/cut-string-after-specific-character-in-javascript/#:~:text=There%20is%20another%20JavaScript%20method%20for%20cutting%20a,the%20character%20and%20the%20other%20after%20the%20character.
-    username = role = myCookie.getCookieByName('username');
-    console.log('#username:',username);
+    username = myCookie.getCookieByName('username');
+    console.log('#username:', username);
     token = myCookie.getCookieByName('token');
-    console.log('#token:',token);
+    console.log('#token:', token);
     role = myCookie.getCookieByName('role');
     apiConnection.setBearer(token);
     usernamePlaceholder.innerHTML = username;
@@ -81,9 +82,14 @@ btnLogOut.addEventListener('click', async (e)=>{
     e.preventDefault();
     console.log('logOut');
     UI.hideSection(usersContainer);
-    await apiConnection.logOut();
+    Cookie.clearAnyCookie("username");
+    Cookie.clearAnyCookie("token");
+    Cookie.clearAnyCookie("jwt");
+    Cookie.clearAnyCookie("role");
     loggedIn = false;
     animationPlayed = 0;
+    location.reload();
+    await apiConnection.logOut();
 })
 
 console.log('cookie',document.cookie);
@@ -110,7 +116,7 @@ async function refreshToken(){
             UI.showSection(books_section);
             UI.hideSection(usersContainer);
             if(section !== 'users' && !myCookie.getCookieByName('token')){
-                if(loggedIn){
+                // if(loggedIn){
                     await apiConnection.refreshToken().then(res => {if(res.newAccessToken){
                         console.log('called');
                         myCookie.clearCookie('token');
@@ -121,7 +127,7 @@ async function refreshToken(){
                         return new Error("couldn't refresh the token");
                     }
                 });
-            }
+            // }
         }else{
             if(section !== 'users'){
                 UI.showAlert(`Your ccess token is still valid!`,'info');

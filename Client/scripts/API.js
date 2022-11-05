@@ -32,10 +32,11 @@ class API{
                     if(response.ok){
                         return await response.json();
                     }else{
+                        UI.showAlert('Username or Password wrong', 'danger');
                         throw new Error(`${response.status} ${response.statusText}`);
                     }
                 }catch (err){
-                    UI.showAlert('Username or Password wrogn', 'danger');
+                    UI.showAlert('There was a problem with the server...', 'danger');
                     console.log('error caught here:',err);
                 }
         }else{
@@ -142,10 +143,6 @@ class API{
             )
 
             if(response.ok){
-                Cookie.clearCookie("username");
-                Cookie.clearCookie("token");
-                Cookie.clearCookie("jwt");
-                Cookie.clearCookie("role");
                 UI.loggedIn(false);
                 return await response.json();
             }else{
@@ -188,6 +185,14 @@ class API{
             return await response.json();
         }catch (err){
             console.log(err);
+        }
+    }
+
+    async verifyAccessToken(){
+        try{
+            const response = await fetch('http://localhost:3500/verifyaccesstoken',{method: 'GET'});
+        }catch (err){
+
         }
     }
 }

@@ -44,6 +44,10 @@ class Cookie {
         document.cookie = this.cname + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
     }
 
+    static clearAnyCookie(cookieName){
+        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+    }
+
     static clearCookie(cookieName){
         document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
     }

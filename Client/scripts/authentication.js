@@ -31,15 +31,16 @@ btnLogIn.addEventListener('click', async (e) =>{
     }else{
         console.log("log in");
         loggedInInfos = await API.logIn().then(result => {
-        myCookie.setCookie('username', username, 1);
-        myCookie.setCookie('token', result.accessToken, 0, 1);
-        myCookie.setCookie('role', result.role, 1);
-        // usernamePlaceholder.innerHTML = username;
-        rolePlaceholder.innerHTML = `[${result.role.toUpperCase()}]`;
+            console.log(result);
+            myCookie.setCookie('username', result.username, 24);
+            myCookie.setCookie('role', result.role, 24);
+            myCookie.setCookie('token', result.accessToken, 0, 1);
+            // usernamePlaceholder.innerHTML = username;
+            rolePlaceholder.innerHTML = `[${result.role.toUpperCase()}]`;
 
-        UI.setRole(result.role);
+            UI.setRole(result.role);
 
-        return result});
+            return result});
         // console.log(loggedInInfos)
         console.log(loggedInInfos.accessToken);
         UI.loggedIn(loggedInInfos.accessToken, myCookie.getCookie());
