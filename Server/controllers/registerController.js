@@ -1,6 +1,7 @@
 const fsPromises = require('fs').promises;
 const path = require('path');
 const bcrypt = require('bcrypt');
+const mongoDB = require('../config/mongoDB')
 
 //use state
 const usersDB = {
@@ -24,7 +25,9 @@ async function register(req, res){
                     "roles":{"user":1000},
                     "password":hashedPassword
                 };
+                await mongoDB.db().collection('Users').insertOne(newUser);
 
+                
                 usersDB.users.push(newUser);
 
                 await fsPromises.writeFile(

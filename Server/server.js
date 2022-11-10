@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3500;
@@ -7,8 +8,7 @@ const cors = require('cors');
 const corsOptions = require('./config/corsConfig');
 const verifyJWT = require('./middleware/verifyJWT');
 const cookieParser = require('cookie-parser');
-const mongo = require('./mongoDB');
-
+const mongoDB = require('./config/mongoDB');
 
 
 app.use(logger);
@@ -46,6 +46,8 @@ app.get('*',(req,res)=>{
     }
 })
 
-app.listen(port,()=>{
+//connect to MongoDB then listen to the port
+mongoDB.openConnection(app.listen(port, ()=>{
     console.log(`Server running on PORT:`, port);
-})
+}));
+

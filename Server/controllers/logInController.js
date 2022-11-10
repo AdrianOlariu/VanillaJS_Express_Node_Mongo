@@ -7,14 +7,18 @@ require('dotenv').config();//cause we don't want to store it. We just keep it in
 const jwt = require('jsonwebtoken');
 const fsPromises = require('fs').promises;
 const path = require('path');
+const mongoDB = require('../config/mongoDB');
 
 async function logIn(req, res){
     const {username, password} = req.body;
     if(username && password){
+        const dbFoundUser = await mongoDB.db().collection('Users').findOne({username:username});
+
+        console.log(dbFoundUser);
         const foundUser = usersDB.users.find(user => user.username === username);
-        if(foundUser){
+        if(dbFoundUser){
             try{
-                const passMatch = await bcrypt.compare(password, foundUser.password);
+                const passMatch = await bcrypt.compare(password, dbFoundUser.password);
 
                 if(passMatch){
 
@@ -23,8 +27,8 @@ async function logIn(req, res){
                     const accessToken = jwt.sign(
                         
                         {
-                        "username":foundUser.username,
-                        "roles":foundUser.roles
+                        "username":dbFoundUser.username,
+                        "roles":dbFoundUser.roles
                         },
 
                         process.env.ACCESS_TOKEN_SECRET,
@@ -35,7 +39,7 @@ async function logIn(req, res){
 
                     //-------------------------------------REFRESH_TOKEN - > USED TO RENEW THE ACCESS TOKEN
                     const refreshToken = jwt.sign(
-                        {"username":foundUser.username},
+                        {"username":dbFoundUser.username},
                         process.env.REFRESH_TOKEN_SECRET,
                         {"expiresIn":'1d'}
                     )
@@ -45,7 +49,9 @@ async function logIn(req, res){
 
                     // SPREAD OPERATOR: https://oprearocks.medium.com/what-do-the-three-dots-mean-in-javascript-bc5749439c9a
                     //folosind spread operator-ul ... , generam obiectul currentUser care detine refreshToken-ul, 
-                    const currentUser = {...foundUser, refreshToken};
+                    const currentUser = {...dbFoundUser, refreshToken};
+                    
+                    await mongoDB.db().collection('Users').updateOne({username:foundUser.username}, {$set:currentUser}, {upsert: true});
                     
                     console.log('current user:', currentUser);
                     //acelasi lucru cu a-l genera folisnd metoda de mai jos
@@ -81,12 +87,12 @@ async function logIn(req, res){
                     //trimitem accessToken-ul intr-un JSON
                     //trimitem in roles, nivelul de autoritate al userului
                     res.json({
-                        "username": foundUser.username,
+                        "username": dbFoundUser.username,
                         "accessToken": accessToken, 
                         //selectam pe baza valorii cele mai mari numele proprietatii cu acea valoare si o trimitem la client
-                        "role": Object.getOwnPropertyNames(foundUser.roles)[Object.values(foundUser.roles).indexOf(Math.max(...Object.values(foundUser.roles)))]
+                        "role": Object.getOwnPropertyNames(dbFoundUser.roles)[Object.values(dbFoundUser.roles).indexOf(Math.max(...Object.values(dbFoundUser.roles)))]
                         });
-                        console.log(Object.getOwnPropertyNames(foundUser.roles)[Object.values(foundUser.roles).indexOf(Math.max(...Object.values(foundUser.roles)))]);
+                        console.log(Object.getOwnPropertyNames(dbFoundUser.roles)[Object.values(dbFoundUser.roles).indexOf(Math.max(...Object.values(dbFoundUser.roles)))]);
                 }else{
                     res.status(409);
                     res.json({"message":"incorrect password"});
