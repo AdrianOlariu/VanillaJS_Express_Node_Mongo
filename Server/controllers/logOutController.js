@@ -20,12 +20,14 @@ async function logOut(req, res){
         DB.setUsers([...otherUsers, foundUser]);
         //STERGEM COOKIE-ul
         res.clearCookie('jwt', {httpOnly: true, sameSite:'None', secure:true});
-        res.sendStatus(204);
         await fsPromises.writeFile(
             path.join(__dirname,'..','model','users.json'),
             JSON.stringify(DB.users)
             )
-        }
+        res.status(200).json({"success":"log out properly"});
+    }else{
+        res.status(403).json({"error":"couldn't log out properly"});
+    }
 }
 
 module.exports = {logOut};

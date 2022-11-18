@@ -1,5 +1,5 @@
 //https://www.digitalocean.com/community/tutorials/how-to-use-schema-validation-in-mongodb
-//Schema can be bypassed by adding 
+
 const BookSchemaCommand = {
     "collMod": "Books",
     "validator": {
@@ -29,6 +29,8 @@ const BookSchemaCommand = {
     }
 }
 
+//Schema can be bypassed by adding something through a command with 
+//{ insert: <collection_name>, documents: [document1,document2], bypassDocumentValidation: true }
 const command = {
     insert: "Books",
     documents: [
@@ -45,7 +47,5 @@ const command = {
     ],
     bypassDocumentValidation: true
  }
-
-const mongoose = require('mongoose');
 
 module.exports = {BookSchemaCommand, command}

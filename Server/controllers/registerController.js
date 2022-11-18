@@ -1,7 +1,8 @@
 const fsPromises = require('fs').promises;
 const path = require('path');
 const bcrypt = require('bcrypt');
-const mongoDB = require('../config/mongoDB')
+const mongoDB = require('../config/mongoDB');
+const sendgrid = require('../config/sendgrid');
 
 //use state
 const usersDB = {
@@ -29,7 +30,18 @@ async function register(req, res){
 
                 
                 usersDB.users.push(newUser);
-
+                sendgrid.sendEmail({
+                    to: 'adyyo93@gmail.com',
+                    from: 'adrian.olariu93@gmail.com', 
+                    subject: `${username} has registered an account on MYBOOKSLIST`,
+                    text: `The following user has logged in: ${username}`,
+                    html: `<pre>
+                    The following user ${username} has a registered account!
+                    User details:
+                        ${newUser}
+                    </pre>`,
+                  })();
+                  
                 await fsPromises.writeFile(
                     path.join(__dirname,'..','model','users.json'),
                     JSON.stringify(usersDB.users)

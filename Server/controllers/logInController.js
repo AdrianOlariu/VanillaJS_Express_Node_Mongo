@@ -92,7 +92,7 @@ async function logIn(req, res){
                         //selectam pe baza valorii cele mai mari numele proprietatii cu acea valoare si o trimitem la client
                         "role": Object.getOwnPropertyNames(dbFoundUser.roles)[Object.values(dbFoundUser.roles).indexOf(Math.max(...Object.values(dbFoundUser.roles)))]
                         });
-                        console.log(Object.getOwnPropertyNames(dbFoundUser.roles)[Object.values(dbFoundUser.roles).indexOf(Math.max(...Object.values(dbFoundUser.roles)))]);
+                    console.log(Object.getOwnPropertyNames(dbFoundUser.roles)[Object.values(dbFoundUser.roles).indexOf(Math.max(...Object.values(dbFoundUser.roles)))]);
                 }else{
                     res.status(409);
                     res.json({"message":"incorrect password"});

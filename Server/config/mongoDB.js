@@ -5,6 +5,7 @@ const {MongoClient, ServerApiVersion} = require('mongodb');
 
 const client = new MongoClient(process.env.DATABASE_URI, {useNewUrlParser: true, useUnifiedTopology: true, serverApi:ServerApiVersion.v1})
 const db = () => client.db(process.env.DATABASE_NAME);
+console.log(process.env.DATABASE_URI);
 
 const openConnection = (callback) => {
     try{

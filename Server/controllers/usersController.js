@@ -2,6 +2,7 @@ const path = require('path');
 const fsPromises = require('fs').promises;
 let users = require('../model/users.json');
 const bcrypt = require('bcrypt');
+const mongoDB = require('../config/mongoDB');
 
 function getAllUsers(req, res){
         const parsedUsers = users.map(user => (
@@ -23,6 +24,8 @@ async function deleteUser(req,res){
         
         const otherUsers = users.filter(user => user.username !== foundUser.username);
         
+        const result = await mongoDB.db().collection('Users').deleteOne({username:username});
+        console.log(result);
         await fsPromises.writeFile(path.join(__dirname,'..','model','users.json'), JSON.stringify(otherUsers));
 
         res.json({"Success":`${foundUser.username} has been deleted`});
