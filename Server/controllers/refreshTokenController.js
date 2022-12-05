@@ -17,7 +17,7 @@ function refreshToken(req, res, next){
         const refreshToken = cookies.jwt;//luam refresh token-ul din cookie
         
         const foundUser = usersDB.users.find(user => user.refreshToken === refreshToken);//cautam user-ul care are acel refresh token, ca sa fim sigur
-        console.log(foundUser);
+        console.log('User found using the refresh token:',foundUser);
         if(foundUser){ //daca s-a gasit un user cu acel refresh token
             jwt.verify( //verificam refresh token-ul din cookie pentr a crea un nou access token
                 refreshToken,

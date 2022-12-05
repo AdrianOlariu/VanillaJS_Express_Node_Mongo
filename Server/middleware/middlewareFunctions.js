@@ -15,7 +15,7 @@ function accessControlAllowCredentials(req,res,next){
         next();
     }else{
         console.log('UNAUTHORIZED ORIGIN:', req.headers.origin);
-        res.json({'message':'not allowed by cors'});
+        res.json({'Access Controll Allow Credentials':'not allowed by cors'});
     }
 }
 

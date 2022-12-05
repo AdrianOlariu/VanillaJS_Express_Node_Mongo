@@ -3,8 +3,11 @@ const jwt = require('jsonwebtoken');
 
 function verifyJWT(req, res, next){
     //the JWT Token is in req.headers.authorization - websites use 'Authorizations' or 'authorization'
+   
+
     const authHeader = (req.headers['authorization'] || req.headers.Authorization);
-    console.log('Authorization header:',authHeader);
+   if(authHeader){
+	 console.log('Authorization header:',authHeader);
     // const roles = req.headers.roles;
     // console.log(roles);
     const token = authHeader.split(" ")[1];//create two elements in the arry, and select the element with index 1, so only the token.
@@ -24,6 +27,9 @@ function verifyJWT(req, res, next){
             res.json({'err verifying JWT':err.message});
         }
     })
+	}else{
+	res.status(403).json({"unauthorized":"authorization header not present"});
+	}
 }
 
 module.exports = verifyJWT;
